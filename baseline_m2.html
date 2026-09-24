@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>M2 wide console</title>
+<style id="base">
+:root{
+  --font-scale:1.0;--line-height:1.4;--letter-spacing:0px;
+  --touch-target-min:48px;--gap:16px;--pad:16px;
+  --fg:#16181d;--fg-muted:#4a4f59;--bg:#f2f3f5;--surface:#ffffff;--border:#c8ccd4;
+}
+*{box-sizing:border-box;margin:0}
+body{
+  width:1600px;height:900px;overflow:hidden;
+  font-family:system-ui,sans-serif;font-size:calc(16px * var(--font-scale));
+  line-height:var(--line-height);letter-spacing:var(--letter-spacing);
+  color:var(--fg);background:var(--bg);padding:var(--pad);
+  display:flex;flex-direction:column;gap:var(--gap);
+}
+[data-hidden="true"]{display:none}
+#header{display:flex;align-items:center;justify-content:space-between;
+  background:var(--surface);border:1px solid var(--border);padding:var(--pad);gap:var(--gap)}
+#machine-name{font-weight:600}
+#status,#operator{color:var(--fg-muted)}
+#alarm-banner{min-width:420px;min-height:44px;display:flex;align-items:center;
+  padding:0 var(--pad);background:#8a4b00;color:#ffffff;font-weight:600}
+#metrics{display:flex;gap:var(--gap)}
+.metric{flex:1 1 0;min-width:0;background:var(--surface);border:1px solid var(--border);padding:var(--pad)}
+.metric-label{color:var(--fg-muted);font-size:0.85em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.metric-value{font-size:1.7em;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#controls{display:flex;gap:var(--gap)}
+.control{flex:1 1 0;min-width:var(--touch-target-min);min-height:var(--touch-target-min);
+  border:1px solid var(--border);background:var(--surface);color:var(--fg);font:inherit;
+  padding:var(--pad);cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#panels{display:flex;gap:var(--gap);flex:1 1 auto;min-height:0}
+.panel{flex:1 1 0;min-width:0;background:var(--surface);border:1px solid var(--border);
+  padding:var(--pad);overflow:hidden}
+.panel-title{font-weight:600;margin-bottom:8px}
+.panel-body{color:var(--fg-muted);font-size:0.9em}
+#emergency-stop{position:fixed;right:40px;bottom:40px;width:80px;height:80px;
+  border:2px solid #4a0000;border-radius:50%;background:#a11212;color:#ffffff;
+  font:inherit;font-weight:700;font-size:0.8em;display:flex;align-items:center;
+  justify-content:center;text-align:center;cursor:pointer}
+</style>
+<style id="adaptation"></style>
+</head>
+<body>
+  <div id="header">
+    <span id="machine-name">Assembly cell 12</span>
+    <span id="status">Running &middot; batch 4417</span>
+    <span id="operator">Operator 1234</span>
+  </div>
+  <div id="alarm-banner">No active alarms</div>
+  <div id="metrics">
+    <div class="metric"><div class="metric-label">Temperature</div><div class="metric-value">172 &deg;C</div></div>
+    <div class="metric"><div class="metric-label">Spindle speed</div><div class="metric-value">980 rpm</div></div>
+    <div class="metric"><div class="metric-label">Line pressure</div><div class="metric-value">5.4 bar</div></div>
+    <div class="metric"><div class="metric-label">Throughput</div><div class="metric-value">312 /h</div></div>
+  </div>
+  <div id="controls">
+    <button class="control" id="ctl-start">Start</button>
+    <button class="control" id="ctl-stop">Stop</button>
+    <button class="control" id="ctl-pause">Pause</button>
+    <button class="control" id="ctl-reset">Reset</button>
+    <button class="control" id="ctl-calibrate">Calibrate</button>
+  </div>
+  <div id="panels">
+    <section class="panel" id="panel-warnings" data-panel="warnings">
+      <div class="panel-title">Warnings</div>
+      <div class="panel-body">Tool wear approaching threshold on station 3.</div>
+    </section>
+    <section class="panel" id="panel-maintenance" data-panel="maintenance">
+      <div class="panel-title">Maintenance</div>
+      <div class="panel-body">Next scheduled service in 118 operating hours.</div>
+    </section>
+    <section class="panel" id="panel-history" data-panel="history">
+      <div class="panel-title">History</div>
+      <div class="panel-body">Last cycle completed 14:22 &middot; nominal.</div>
+    </section>
+  </div>
+  <button id="emergency-stop">STOP</button>
+</body>
+</html>

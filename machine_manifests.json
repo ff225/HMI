@@ -1,0 +1,228 @@
+{
+  "schema_version": "1.0",
+  "vocabulary": [
+    "magnification",
+    "contrast-enhancement",
+    "color-differentiation",
+    "coarse-pointing",
+    "reach-mirroring",
+    "reading-support",
+    "cognitive-load-reduction",
+    "feedback-amplification",
+    "alternative-input",
+    "motion-reduction"
+  ],
+  "machines": [
+    {
+      "machine_id": "M1",
+      "label": "compact panel",
+      "role": "stresses magnification and layout overflow",
+      "holdout": false,
+      "viewport": { "width": 1024, "height": 640 },
+      "structure": {
+        "header": ["machine_name", "status"],
+        "metrics": ["temperature", "rpm", "pressure"],
+        "controls": ["start", "stop", "pause", "reset"],
+        "info_panels": ["warnings", "maintenance"]
+      },
+      "safety_elements": [
+        {
+          "element_id": "emergency_stop",
+          "selector": "#emergency-stop",
+          "min_size_px": [72, 72],
+          "allowed_region": { "anchor": "bottom-right", "margin_px": 24, "tolerance_px": 16 },
+          "min_contrast_ratio": 4.5,
+          "occlusion": "forbidden",
+          "always_visible": true
+        },
+        {
+          "element_id": "alarm_banner",
+          "selector": "#alarm-banner",
+          "min_size_px": [320, 40],
+          "min_contrast_ratio": 4.5,
+          "occlusion": "forbidden",
+          "always_visible": true
+        }
+      ],
+      "adaptable_surface": {
+        "properties": [
+          "font-size", "line-height", "letter-spacing", "color", "background-color",
+          "padding", "gap", "min-width", "min-height", "flex-direction", "order"
+        ],
+        "forbidden_properties": [
+          "position", "transform", "display", "visibility", "opacity", "z-index", "clip-path"
+        ],
+        "protected_selectors": ["#emergency-stop", "#alarm-banner"],
+        "ranges": {
+          "font-scale": [1.0, 2.0],
+          "touch-target-min-px": [40, 96],
+          "line-height": [1.2, 2.0]
+        },
+        "panel_visibility": { "hideable": ["maintenance"], "locked": ["warnings"] }
+      },
+      "capabilities": { "audio_output": true, "voice_input": false, "haptic": false }
+    },
+    {
+      "machine_id": "M2",
+      "label": "wide console",
+      "role": "control condition, generous spatial margin",
+      "holdout": false,
+      "viewport": { "width": 1600, "height": 900 },
+      "structure": {
+        "header": ["machine_name", "status", "operator"],
+        "metrics": ["temperature", "rpm", "pressure", "throughput"],
+        "controls": ["start", "stop", "pause", "reset", "calibrate"],
+        "info_panels": ["warnings", "maintenance", "history"]
+      },
+      "safety_elements": [
+        {
+          "element_id": "emergency_stop",
+          "selector": "#emergency-stop",
+          "min_size_px": [80, 80],
+          "allowed_region": { "anchor": "bottom-right", "margin_px": 40, "tolerance_px": 40 },
+          "min_contrast_ratio": 4.5,
+          "occlusion": "forbidden",
+          "always_visible": true
+        },
+        {
+          "element_id": "alarm_banner",
+          "selector": "#alarm-banner",
+          "min_size_px": [420, 44],
+          "min_contrast_ratio": 4.5,
+          "occlusion": "forbidden",
+          "always_visible": true
+        }
+      ],
+      "adaptable_surface": {
+        "properties": [
+          "font-size", "line-height", "letter-spacing", "color", "background-color",
+          "padding", "gap", "min-width", "min-height", "flex-direction", "order", "grid-template-columns"
+        ],
+        "forbidden_properties": [
+          "position", "transform", "display", "visibility", "opacity", "z-index", "clip-path"
+        ],
+        "protected_selectors": ["#emergency-stop", "#alarm-banner"],
+        "ranges": {
+          "font-scale": [1.0, 2.2],
+          "touch-target-min-px": [40, 112],
+          "line-height": [1.2, 2.2]
+        },
+        "panel_visibility": { "hideable": ["maintenance", "history"], "locked": ["warnings"] }
+      },
+      "capabilities": { "audio_output": true, "voice_input": true, "haptic": false }
+    },
+    {
+      "machine_id": "M3",
+      "label": "dense dashboard",
+      "role": "stresses coarse-pointing and panel reflow, occlusion-prone",
+      "holdout": false,
+      "viewport": { "width": 1280, "height": 720 },
+      "structure": {
+        "header": ["machine_name", "status", "shift", "batch"],
+        "metrics": ["temperature", "rpm", "pressure", "vibration", "power", "yield"],
+        "controls": ["start", "stop", "pause", "reset", "purge", "sample"],
+        "info_panels": ["warnings", "maintenance", "trends", "log"]
+      },
+      "safety_elements": [
+        {
+          "element_id": "emergency_stop",
+          "selector": "#emergency-stop",
+          "min_size_px": [64, 64],
+          "allowed_region": { "anchor": "control-bar", "margin_px": 12, "tolerance_px": 8 },
+          "min_contrast_ratio": 4.5,
+          "occlusion": "forbidden",
+          "always_visible": true
+        },
+        {
+          "element_id": "alarm_indicators",
+          "selector": ".alarm-indicator",
+          "min_size_px": [48, 48],
+          "min_contrast_ratio": 4.5,
+          "occlusion": "forbidden",
+          "always_visible": true
+        }
+      ],
+      "adaptable_surface": {
+        "properties": [
+          "font-size", "line-height", "color", "background-color",
+          "padding", "gap", "min-width", "min-height", "order"
+        ],
+        "forbidden_properties": [
+          "position", "transform", "display", "visibility", "opacity", "z-index", "clip-path", "float"
+        ],
+        "protected_selectors": ["#emergency-stop", ".alarm-indicator"],
+        "ranges": {
+          "font-scale": [1.0, 1.6],
+          "touch-target-min-px": [40, 80],
+          "line-height": [1.2, 1.8]
+        },
+        "panel_visibility": { "hideable": ["trends", "log", "maintenance"], "locked": ["warnings"] }
+      },
+      "capabilities": { "audio_output": true, "voice_input": true, "haptic": false }
+    },
+    {
+      "machine_id": "M4",
+      "label": "vertical rail terminal",
+      "role": "HOLD-OUT — unseen during skill authoring, portrait layout, side safety rail",
+      "holdout": true,
+      "viewport": { "width": 800, "height": 1280 },
+      "structure": {
+        "header": ["machine_name", "status"],
+        "metrics": ["temperature", "pressure", "cycle_count"],
+        "controls": ["start", "stop", "hold", "reset"],
+        "info_panels": ["warnings", "checklist"]
+      },
+      "safety_elements": [
+        {
+          "element_id": "emergency_stop",
+          "selector": "#emergency-stop",
+          "min_size_px": [88, 88],
+          "allowed_region": { "anchor": "left-rail", "margin_px": 16, "tolerance_px": 12 },
+          "min_contrast_ratio": 4.5,
+          "occlusion": "forbidden",
+          "always_visible": true
+        },
+        {
+          "element_id": "alarm_banner",
+          "selector": "#alarm-banner",
+          "min_size_px": [300, 48],
+          "min_contrast_ratio": 4.5,
+          "occlusion": "forbidden",
+          "always_visible": true
+        }
+      ],
+      "adaptable_surface": {
+        "properties": [
+          "font-size", "line-height", "letter-spacing", "color", "background-color",
+          "padding", "gap", "min-width", "min-height", "flex-direction", "order"
+        ],
+        "forbidden_properties": [
+          "position", "transform", "display", "visibility", "opacity", "z-index", "clip-path"
+        ],
+        "protected_selectors": ["#emergency-stop", "#alarm-banner"],
+        "ranges": {
+          "font-scale": [1.0, 1.8],
+          "touch-target-min-px": [44, 104],
+          "line-height": [1.2, 2.0]
+        },
+        "panel_visibility": { "hideable": ["checklist"], "locked": ["warnings"] }
+      },
+      "capabilities": { "audio_output": false, "voice_input": false, "haptic": true }
+    }
+  ],
+  "violation_taxonomy": [
+    { "code": "parse_error", "stage": "pre-render", "description": "output is not valid CSS or JSON" },
+    { "code": "schema_error", "stage": "pre-render", "description": "configuration does not match the expected structure" },
+    { "code": "forbidden_property", "stage": "pre-render", "description": "rule uses a property outside the adaptable surface" },
+    { "code": "protected_selector", "stage": "pre-render", "description": "rule targets a protected safety selector" },
+    { "code": "range_violation", "stage": "pre-render", "description": "declared value falls outside the machine range" },
+    { "code": "safety_size", "stage": "post-render", "description": "rendered safety element below min_size_px" },
+    { "code": "safety_position", "stage": "post-render", "description": "safety element outside allowed_region or viewport" },
+    { "code": "safety_occlusion", "stage": "post-render", "description": "hit-test at centre or corners returns another element" },
+    { "code": "safety_contrast", "stage": "post-render", "description": "resolved contrast ratio below min_contrast_ratio" },
+    { "code": "panel_lock", "stage": "post-render", "description": "a locked panel is not rendered or not visible" },
+    { "code": "integrity_overflow", "stage": "post-render", "description": "scrollWidth exceeds clientWidth on a non-scrollable container" },
+    { "code": "integrity_overlap", "stage": "post-render", "description": "bounding boxes of sibling interactive elements intersect" },
+    { "code": "integrity_truncation", "stage": "post-render", "description": "text content is clipped in a metric or control label" }
+  ]
+}

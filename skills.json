@@ -1,0 +1,137 @@
+{
+  "library_version": "1.0-frozen",
+  "note": "Directives are expressed over the machine's declared adaptable surface. Values are ranges; the model selects within them and must stay inside the machine's own declared ranges, which always take precedence.",
+  "precedence": ["safety", "persistent", "transient", "preference"],
+  "skills": [
+    {
+      "skill_id": "magnification",
+      "applies_to": ["magnification"],
+      "rationale": "Reduced visual acuity requires larger rendered text. WCAG 2.2 SC 1.4.4 expects content to remain usable when scaled; enlarging the typographic scale rather than zooming preserves layout control.",
+      "directives": {
+        "low": {"--font-scale": [1.15, 1.3], "--line-height": [1.4, 1.5]},
+        "moderate": {"--font-scale": [1.3, 1.5], "--line-height": [1.5, 1.7]},
+        "high": {"--font-scale": [1.5, 1.8], "--line-height": [1.6, 1.9]}
+      },
+      "touches": ["font-size", "line-height", "--font-scale", "--line-height"],
+      "conflicts_with": ["cognitive-load-reduction"],
+      "degradation": "If the machine caps font-scale below the requested range, use the cap and raise line-height and padding instead."
+    },
+    {
+      "skill_id": "contrast-enhancement",
+      "applies_to": ["contrast-enhancement"],
+      "rationale": "Ambient glare and reduced contrast sensitivity lower effective legibility. WCAG 2.2 SC 1.4.3 sets 4.5:1 for body text; industrial lighting warrants a higher working target.",
+      "directives": {
+        "low": {"target_contrast": 5.0},
+        "moderate": {"target_contrast": 7.0},
+        "high": {"target_contrast": 10.0}
+      },
+      "touches": ["color", "background-color", "--fg", "--fg-muted", "--bg", "--surface", "--border"],
+      "conflicts_with": ["color-differentiation"],
+      "degradation": "Never restyle protected safety selectors; raise contrast on surrounding surfaces instead."
+    },
+    {
+      "skill_id": "color-differentiation",
+      "applies_to": ["color-differentiation"],
+      "rationale": "Colour vision deficiency makes hue-only encoding unreliable. WCAG 2.2 SC 1.4.1 requires that colour is not the sole carrier of meaning; luminance separation is the robust substitute.",
+      "directives": {
+        "low": {"strategy": "increase luminance separation between surface and text"},
+        "moderate": {"strategy": "avoid red-green pairings, widen luminance separation"},
+        "high": {"strategy": "use a luminance-ordered neutral palette for non-safety surfaces"}
+      },
+      "touches": ["color", "background-color", "--fg", "--fg-muted", "--bg", "--surface", "--border"],
+      "conflicts_with": ["contrast-enhancement"],
+      "degradation": "If the palette cannot be changed without touching protected selectors, adjust borders only."
+    },
+    {
+      "skill_id": "coarse-pointing",
+      "applies_to": ["coarse-pointing"],
+      "rationale": "Gloves, tremor or reduced dexterity enlarge effective pointer error. WCAG 2.2 SC 2.5.8 sets a 24px minimum target; industrial use with gloves needs substantially more, plus spacing to limit mis-activation.",
+      "directives": {
+        "low": {"--touch-target-min": [52, 60], "--gap": [14, 18]},
+        "moderate": {"--touch-target-min": [60, 76], "--gap": [18, 24]},
+        "high": {"--touch-target-min": [76, 96], "--gap": [24, 32]}
+      },
+      "touches": ["min-width", "min-height", "padding", "gap", "--touch-target-min", "--gap", "--pad"],
+      "conflicts_with": ["magnification"],
+      "degradation": "If enlarging targets would overflow the viewport, hide hideable panels first, then reduce the target increment."
+    },
+    {
+      "skill_id": "reach-mirroring",
+      "applies_to": ["reach-mirroring"],
+      "rationale": "Layouts assume right-hand reach. Repositioning frequent controls within the natural arc of the dominant hand reduces cross-body reaching (ISO 9241-210 ergonomic fit).",
+      "directives": {
+        "low": {"strategy": "reverse control order only"},
+        "moderate": {"strategy": "reverse control order and panel order"},
+        "high": {"strategy": "reverse control and panel order, bias padding toward the dominant side"}
+      },
+      "touches": ["order", "flex-direction", "padding"],
+      "conflicts_with": [],
+      "degradation": "Reordering must never move a protected safety element; leave its position untouched."
+    },
+    {
+      "skill_id": "reading-support",
+      "applies_to": ["reading-support"],
+      "rationale": "Reading difficulty benefits from wider inter-letter and inter-line spacing more than from larger glyphs. WCAG 2.2 SC 1.4.12 defines text-spacing thresholds that must remain usable.",
+      "directives": {
+        "low": {"--line-height": [1.5, 1.6], "--letter-spacing": [0.02, 0.04]},
+        "moderate": {"--line-height": [1.6, 1.8], "--letter-spacing": [0.04, 0.08]},
+        "high": {"--line-height": [1.8, 2.0], "--letter-spacing": [0.08, 0.12]}
+      },
+      "touches": ["line-height", "letter-spacing", "--line-height", "--letter-spacing"],
+      "conflicts_with": ["cognitive-load-reduction"],
+      "degradation": "If spacing causes truncation in metric values, cap letter-spacing before reducing line-height."
+    },
+    {
+      "skill_id": "cognitive-load-reduction",
+      "applies_to": ["cognitive-load-reduction"],
+      "rationale": "Elevated workload narrows attention. Reducing the number of simultaneously competing regions lowers visual search cost; locked panels carry operational risk information and must remain.",
+      "directives": {
+        "low": {"hide_panels": 0, "--gap": [16, 20]},
+        "moderate": {"hide_panels": 1, "--gap": [18, 24]},
+        "high": {"hide_panels": 2, "--gap": [20, 28]}
+      },
+      "touches": ["panels_hidden", "gap", "--gap"],
+      "conflicts_with": ["magnification", "reading-support"],
+      "degradation": "Hide only panels listed as hideable; if fewer are available than requested, hide all available ones and stop."
+    },
+    {
+      "skill_id": "feedback-amplification",
+      "applies_to": ["feedback-amplification"],
+      "rationale": "When tactile or auditory confirmation is degraded, visual acknowledgement must carry more weight, so confirmation affordances are given greater visual prominence.",
+      "directives": {
+        "low": {"--pad": [14, 18]},
+        "moderate": {"--pad": [18, 24], "control_emphasis": "raise border weight"},
+        "high": {"--pad": [24, 30], "control_emphasis": "raise border weight and surface separation"}
+      },
+      "touches": ["padding", "border-color", "background-color", "--pad"],
+      "conflicts_with": [],
+      "degradation": "If the machine declares audio or haptic capability, prefer those channels and keep visual changes minimal."
+    },
+    {
+      "skill_id": "alternative-input",
+      "applies_to": ["alternative-input"],
+      "rationale": "When direct manipulation is unreliable, an alternative modality reduces dependence on fine motor control. The modality must be declared by the machine; it cannot be assumed.",
+      "directives": {
+        "low": {"strategy": "no visual change unless capability is declared"},
+        "moderate": {"strategy": "enlarge primary controls if no alternative modality is available"},
+        "high": {"strategy": "enlarge primary controls and increase spacing if no alternative modality is available"}
+      },
+      "touches": ["min-width", "min-height", "gap", "--touch-target-min"],
+      "conflicts_with": [],
+      "degradation": "If the machine declares neither voice_input nor haptic, fall back to coarse-pointing directives at one level lower."
+    },
+    {
+      "skill_id": "motion-reduction",
+      "applies_to": ["motion-reduction"],
+      "rationale": "Motion sensitivity and fatigue are aggravated by animated or high-frequency visual change. Reducing chromatic activity lowers perceived visual noise on static interfaces.",
+      "directives": {
+        "low": {"strategy": "reduce saturation of non-safety surfaces slightly"},
+        "moderate": {"strategy": "reduce saturation of non-safety surfaces"},
+        "high": {"strategy": "use desaturated neutral surfaces outside safety elements"}
+      },
+      "touches": ["background-color", "color", "--bg", "--surface", "--fg-muted"],
+      "conflicts_with": ["contrast-enhancement"],
+      "degradation": "Desaturation must not reduce any measured contrast below the machine minimum."
+    }
+  ]
+}

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>M3 dense dashboard</title>
+<style id="base">
+:root{
+  --font-scale:1.0;--line-height:1.3;--letter-spacing:0px;
+  --touch-target-min:44px;--gap:8px;--pad:8px;
+  --fg:#16181d;--fg-muted:#4a4f59;--bg:#eef0f3;--surface:#ffffff;--border:#c8ccd4;
+}
+*{box-sizing:border-box;margin:0}
+body{
+  width:1280px;height:720px;overflow:hidden;
+  font-family:system-ui,sans-serif;font-size:calc(14px * var(--font-scale));
+  line-height:var(--line-height);letter-spacing:var(--letter-spacing);
+  color:var(--fg);background:var(--bg);padding:var(--pad);
+  display:flex;flex-direction:column;gap:var(--gap);
+}
+[data-hidden="true"]{display:none}
+#header{display:flex;align-items:center;gap:var(--gap);background:var(--surface);
+  border:1px solid var(--border);padding:var(--pad)}
+#machine-name{font-weight:600}
+#status,#shift,#batch{color:var(--fg-muted);font-size:0.9em}
+#alarms{display:flex;gap:var(--gap)}
+.alarm-indicator{min-width:48px;min-height:48px;display:flex;align-items:center;
+  justify-content:center;padding:0 var(--pad);background:#8a4b00;color:#ffffff;
+  font-weight:600;font-size:0.85em;white-space:nowrap}
+#metrics{display:flex;gap:var(--gap)}
+.metric{flex:1 1 0;min-width:0;background:var(--surface);border:1px solid var(--border);padding:var(--pad)}
+.metric-label{color:var(--fg-muted);font-size:0.8em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.metric-value{font-size:1.35em;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#controls{display:flex;gap:var(--gap);align-items:stretch}
+.control{flex:1 1 0;min-width:var(--touch-target-min);min-height:var(--touch-target-min);
+  border:1px solid var(--border);background:var(--surface);color:var(--fg);font:inherit;
+  padding:var(--pad);cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#emergency-stop{flex:0 0 auto;width:64px;height:64px;border:2px solid #4a0000;
+  border-radius:50%;background:#a11212;color:#ffffff;font:inherit;font-weight:700;
+  font-size:0.75em;display:flex;align-items:center;justify-content:center;
+  text-align:center;cursor:pointer}
+#panels{display:flex;gap:var(--gap);flex:1 1 auto;min-height:0}
+.panel{flex:1 1 0;min-width:0;background:var(--surface);border:1px solid var(--border);
+  padding:var(--pad);overflow:hidden}
+.panel-title{font-weight:600;margin-bottom:4px;font-size:0.95em}
+.panel-body{color:var(--fg-muted);font-size:0.85em}
+</style>
+<style id="adaptation"></style>
+</head>
+<body>
+  <div id="header">
+    <span id="machine-name">Extruder 07</span>
+    <span id="status">Running</span>
+    <span id="shift">Shift B</span>
+    <span id="batch">Batch 9021</span>
+  </div>
+  <div id="alarms">
+    <div class="alarm-indicator">Coolant OK</div>
+    <div class="alarm-indicator">Feed OK</div>
+    <div class="alarm-indicator">Vacuum OK</div>
+  </div>
+  <div id="metrics">
+    <div class="metric"><div class="metric-label">Temperature</div><div class="metric-value">216 &deg;C</div></div>
+    <div class="metric"><div class="metric-label">Screw speed</div><div class="metric-value">88 rpm</div></div>
+    <div class="metric"><div class="metric-label">Head pressure</div><div class="metric-value">142 bar</div></div>
+    <div class="metric"><div class="metric-label">Vibration</div><div class="metric-value">0.8 mm/s</div></div>
+    <div class="metric"><div class="metric-label">Power draw</div><div class="metric-value">41 kW</div></div>
+    <div class="metric"><div class="metric-label">Yield</div><div class="metric-value">97.2 %</div></div>
+  </div>
+  <div id="controls">
+    <button class="control" id="ctl-start">Start</button>
+    <button class="control" id="ctl-stop">Stop</button>
+    <button class="control" id="ctl-pause">Pause</button>
+    <button class="control" id="ctl-reset">Reset</button>
+    <button class="control" id="ctl-purge">Purge</button>
+    <button class="control" id="ctl-sample">Sample</button>
+    <button id="emergency-stop">STOP</button>
+  </div>
+  <div id="panels">
+    <section class="panel" id="panel-warnings" data-panel="warnings">
+      <div class="panel-title">Warnings</div><div class="panel-body">Melt temperature drifting above setpoint.</div>
+    </section>
+    <section class="panel" id="panel-maintenance" data-panel="maintenance">
+      <div class="panel-title">Maintenance</div><div class="panel-body">Screen pack change due in 6 hours.</div>
+    </section>
+    <section class="panel" id="panel-trends" data-panel="trends">
+      <div class="panel-title">Trends</div><div class="panel-body">Pressure stable over last 4 cycles.</div>
+    </section>
+    <section class="panel" id="panel-log" data-panel="log">
+      <div class="panel-title">Log</div><div class="panel-body">14:31 setpoint adjusted by operator.</div>
+    </section>
+  </div>
+</body>
+</html>
